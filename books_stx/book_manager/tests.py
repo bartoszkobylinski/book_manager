@@ -38,13 +38,12 @@ class TestBookMode(TestCase):
 
 class TestBookListView(TestCase):
 
-    def test_book_list_view(self):
-        client = Client()
-        response = client.get(reverse('books'))
+    def setUp(self):
+        self.client = Client()
+        self.response = self.client.get(reverse('books'))
 
-        self.assertEqual(response.status_code, 200)
-    
+    def test_book_list_view(self):
+        self.assertEqual(self.response.status_code, 200)
+
     def test_book_list_view_is_using_correct_template(self):
-        client = Client()
-        response = client.get(reverse('books'))
-        self.assertTemplateUsed(response, 'books.html')
+        self.assertTemplateUsed(self.response, 'books.html')
