@@ -24,7 +24,7 @@ class TestBookMode(TestCase):
             author='Author',
             title="Title",
             publish_year=1520,
-            isbn=145841451,
+            isbn='123456780123',
             pages=152,
             cover='http:/eueu',
             language="pl")
