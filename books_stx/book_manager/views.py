@@ -1,5 +1,4 @@
 from django.views.generic import ListView, CreateView
-from django.urls import reverse_lazy
 from book_manager.forms import BookForm
 from book_manager.models import Book
 
@@ -18,4 +17,3 @@ class BookListView(ListView):
 class AddBookView(CreateView):
     form_class = BookForm
     template_name = "add_book.html"
-
