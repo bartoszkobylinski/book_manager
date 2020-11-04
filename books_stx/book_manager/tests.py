@@ -1,5 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 from book_manager.models import Book
+from book_manager.views import BookListView
+
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -12,9 +15,9 @@ class TestDjangoInstallation(TestCase):
 
     def test_if_django_is_instaled_and_runs(self):
         driver = self.driver
-        driver.get("http://127.0.0.1:8000")
+        driver.get("http://127.0.0.1:8000/books")
         browser = driver
-        self.assertIn("Django", browser.title)
+        self.assertIn("Django books", browser.title)
 
 
 class TestBookMode(TestCase):
@@ -31,3 +34,17 @@ class TestBookMode(TestCase):
         book.save()
         books_query = Book.objects.all()
         self.assertEqual(books_query.count(), 1)
+
+
+class TestBookListView(TestCase):
+
+    def test_book_list_view(self):
+        client = Client()
+        response = client.get(reverse('books'))
+
+        self.assertEqual(response.status_code, 200)
+    
+    def test_book_list_view_is_using_correct_template(self):
+        client = Client()
+        response = client.get(reverse('books'))
+        self.assertTemplateUsed(response, 'books.html')
