@@ -23,6 +23,17 @@ class TestDjangoInstallation(TestCase):
 
 class TestBookModel(TestCase):
 
+    def setUp(self):
+        self.form = BookForm(data={
+            'author': "Jhon Doe",
+            'title': "Django Cook Book",
+            'publish_year': 1254,
+            'isbn': "1234567890153",
+            'pages': 1254,
+            'cover': 'http://www.camy.pl',
+            'language': 'pl'
+        })
+
     def test_retrieving_and_saving_book_model(self):
         Book.objects.create(
             author='Author',
@@ -48,28 +59,10 @@ class TestBookModel(TestCase):
             book.full_clean()
 
     def test_book_form_is_valid_with_correct_data(self):
-        form = BookForm(data={
-            'author': "Jhon Doe",
-            'title': "Django Cook Book",
-            'publish_year': 1254,
-            'isbn': "1234567890153",
-            'pages': 1254,
-            'cover': 'http://www.camy.pl',
-            'language': 'pl'
-        })
-        self.assertTrue(form.is_valid())
+        self.assertTrue(self.form.is_valid())
 
     def test_book_form_is_not_valid_with_wrong_data(self):
-        form = BookForm(data={
-            'author': "Jhon Doe",
-            'title': "Django Cook Book",
-            'publish_year': 1254,
-            'isbn': "123456789013",
-            'pages': 1254,
-            'cover': 'http://www.camy.pl',
-            'language': 'pl'
-        })
-        self.assertFalse(form.is_valid())
+        self.assertFalse(self.form.is_valid())
 
 
 class TestBookListView(TestCase):
