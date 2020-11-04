@@ -1,7 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from book_manager.models import Book
-from book_manager.views import BookListView
 
 
 from selenium import webdriver
