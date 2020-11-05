@@ -3,6 +3,7 @@ from django.urls import reverse
 from book_manager.models import Book
 from book_manager.forms import BookForm
 from django.core.exceptions import ValidationError
+from book_manager.languages import get_language_codes
 
 
 from selenium import webdriver
@@ -103,3 +104,13 @@ class TestAddBookView(TestCase):
                 'cover': 'http://www.camy.pl',
                 'language': 'pl'})
         self.assertEqual(Book.objects.last().title, "Django Cook Book")
+
+class TestLanguagesCode(TestCase):
+
+    def test_if_get_language_codes(self):
+        language_codes = get_language_codes()
+        self.assertIsInstance(language_codes, list)
+    
+    def test_if_first_element_is_removed(self):
+        language_codes = get_language_codes()
+        self.assertNotIn("",language_codes)
