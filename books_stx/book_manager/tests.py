@@ -105,12 +105,13 @@ class TestAddBookView(TestCase):
                 'language': 'pl'})
         self.assertEqual(Book.objects.last().title, "Django Cook Book")
 
+
 class TestLanguagesCode(TestCase):
 
     def test_if_get_language_codes(self):
         language_codes = get_language_codes()
         self.assertIsInstance(language_codes, list)
-    
+
     def test_if_first_element_is_removed(self):
         language_codes = get_language_codes()
-        self.assertNotIn("",language_codes)
+        self.assertNotIn("", language_codes)

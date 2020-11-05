@@ -12,6 +12,7 @@ class BookListView(ListView):
     def get_queryset(self):
         queryset = Book.objects.all()
         return queryset
+    
 
 
 class AddBookView(CreateView):
