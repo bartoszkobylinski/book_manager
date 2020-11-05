@@ -21,7 +21,7 @@ class GmailAPIParser:
     def create_query(self):
         query = self.gmail_key
         if self.author:
-            query = f"{query}{self.author} "
+            query = f"{query}{self.author}"
         if self.title:
             query = f"{query}+intitle:{self.title}"
         if self.publisher:
@@ -45,41 +45,72 @@ class GmailAPIParser:
             response = json.loads(response)
             return response
 
+    def get_query_elements(self):
+        query_elements = self.get_query()
+        query_elements_list = query_elements.get("items", '')
+        return query_elements_list
+
+    def get_authors(self, query):
+        authors = ''
+        if len(query.get('volumeInfo', '').get('authors', '')) > 1:
+            for author in query.get('volumeInfo', '').get('authors', ''):
+                authors += f"{author} "
+            return authors
+        else:
+            author = query.get('volumeInfo', '').get('authors', '')[0]
+            return author
+
+    def get_title(self, query):
+        return query.get('volumeInfo', '').get('title', '')
+
+    def get_isbn_13(self, query):
+        for isbn_13 in query.get('volumeInfo', '').get('industryIdentifiers', ''):
+            if isbn_13.get("type", "") == "ISBN_13":
+                return isbn_13.get("identifier", "")
+
+    def get_isbn_10(self, query):
+        for isbn_10 in query.get('volumeInfo', '').get('industryIdentifiers', ''):
+            if isbn_10.get("type", "") == "ISBN_10":
+                return isbn_10.get("identifier", "")
+
+    def get_oclc_number(self, query):
+        for oclc_number in query.get('volumeInfo', '').get('industryIdentifiers', ''):
+            if oclc_number.get('type', '') == 'OTHER':
+                if oclc_number.get('identifier', '')[:4] == 'OCLC':
+                    return oclc_number.get('identifier', '')
+
+    def get_lccn_number(self, query):
+        for lccn_number in query.get('volumeInfo', '').get('industryIdentifiers', ''):
+            if lccn_number.get('type', '') == 'OTHER':
+                if lccn_number.get('identifier', '')[:4] == 'OCLC':
+                    return lccn_number.get('identifier', '')
+
+    def get_pages(self, query):
+        return query.get('volumeInfo', '').get('pageCount', '')
+
+    def get_languages(self, query):
+        return query.get('volumeInfo', '').get('language', '')
+
+    def get_cover_link(self, query):
+        if isinstance(query.get('volumeInfo', '').get('imageLinks', ''), str):
+            return query.get('volumeInfo', '').get('imageLinks', '')
+        else:
+            return query.get('volumeInfo', '').get('imageLinks', '').get('thumbnail', '')
+
     def get_books_from_query(self):
-        books_query = self.get_query()
         books_list = []
-        for book in books_query.get("items", ''):
-            book_dict = {}
-            authors = ''
-            if len(book.get('volumeInfo', '').get('authors', '')) > 1:
-                for author in book.get('volumeInfo', '').get('authors', ''):
-                    authors += f"{author} "
-                book_dict.update(authors=authors)
-            else:
-                book_dict.update(authors=book.get('volumeInfo', '').get('authors', '')[0])
-            book_dict.update(title=book.get('volumeInfo', '').get('title', ''))
-            book_dict.update(publish_year=book.get('volumeInfo', '').get('publishedDate', '')[:4])
-            for isbn in book.get('volumeInfo', '').get('industryIdentifiers', ''):
-                if isbn.get('type', '') == 'ISBN_13':
-                    book_dict.update(isbn_13=isbn.get('identifier', ''))
-                elif isbn.get('type', '') == 'ISBN_10':
-                    book_dict.update(isbn_10=isbn.get('identifier', ''))
-                elif isbn.get('type', '') == 'OTHER':
-                    if isbn.get('identifier', '')[:4] == 'OCLC':
-                        book_dict.update(oclc=isbn.get('identifier', ''))
-                    elif isbn.get('identifier', '')[:4] == 'LCCN':
-                        book_dict.update(lccn=isbn.get('identifier', ''))
-            pages = book.get('volumeInfo', '').get('pageCount', '')
-            if pages == '':
-                book_dict.update(pages=0)
-            else:
-                book_dict.update(pages=pages)
-            book_dict.update(language=book.get('volumeInfo', '').get('language', ''))
-            if isinstance(book.get('volumeInfo', '').get('imageLinks', ''), str):
-                book_dict.update(cover=book.get('volumeInfo', '').get('imageLinks', ''))
-            else:
-                book_dict.update(cover=book.get('volumeInfo', '').get('imageLinks', '').get('thumbnail', ''))
-            books_list.append(book_dict)
+        for element in self.get_query_elements():
+            book = {}
+            book.update(authors=self.get_authors(element))
+            book.update(title=self.get_title(element))
+            book.update(isbn_13=self.get_isbn_13(element))
+            book.update(isbn_10=self.get_isbn_10(element))
+            book.update(oclc_number=self.get_oclc_number(element))
+            book.update(lccn_number=self.get_lccn_number(element))
+            book.update(pages=self.get_pages(element))
+            book.update(language=self.get_languages(element))
+            book.update(cover=self.get_cover_link(element))
+            books_list.append(book)
         return books_list
 
     def save_books_to_database(self):
