@@ -88,7 +88,7 @@ class GmailAPIParser:
     def get_pages(self, query):
         return query.get('volumeInfo', '').get('pageCount', '')
 
-    def get_languages(self, query):
+    def get_language(self, query):
         return query.get('volumeInfo', '').get('language', '')
 
     def get_cover_link(self, query):
@@ -108,7 +108,7 @@ class GmailAPIParser:
             book.update(oclc_number=self.get_oclc_number(element))
             book.update(lccn_number=self.get_lccn_number(element))
             book.update(pages=self.get_pages(element))
-            book.update(language=self.get_languages(element))
+            book.update(language=self.get_language(element))
             book.update(cover=self.get_cover_link(element))
             books_list.append(book)
         return books_list
