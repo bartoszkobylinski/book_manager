@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Book(models.Model):
@@ -10,4 +11,5 @@ class Book(models.Model):
     cover = models.URLField()
     language = models.CharField(max_length=2)
 
-# Create your models here.
+    def get_absolute_url(self):
+        return reverse('books')
