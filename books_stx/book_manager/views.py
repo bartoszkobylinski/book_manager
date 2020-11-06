@@ -1,11 +1,9 @@
-from django.views.generic import ListView, CreateView, FormView, UpdateView
+from django.views.generic import CreateView, FormView, UpdateView
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from book_manager.forms import BookForm, GoogleApiForm
+from book_manager.forms import GoogleApiForm
 from book_manager.models import Book
 from book_manager.google_book_api import GoogleAPIParser
 from book_manager.CONSTANS import GOOGLE_API_KEY
-from book_manager.filters import BookFilter
 
 
 class AddBookView(CreateView):

@@ -114,3 +114,10 @@ nav{
     background-color: #e0e0e0;
     color:#333;
 }
+.error p{
+    color: #CB4335;
+    font-size: 2rem;
+    border: 1px solid #CB4335;
+    padding: 1rem;
+    border-radius: 5px;
+}
