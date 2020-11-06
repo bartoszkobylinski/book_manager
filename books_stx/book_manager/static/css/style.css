@@ -1,8 +1,35 @@
-
+body{
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 1rem;
+}
 
 .main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     background-size: 1800px 900px;
     background-repeat: no-repeat;
     background-position: top;
     background-attachment: fixed;
 }
+.table-wrapper{
+    width: 70%;
+}
+.table-wrapper table td,th{
+    text-align: center;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 0.5px solid #111;
+}
+.table-wrapper table td img{
+    width: 4rem;
+}
+.table-wrapper table th{
+    background-color: #333;
+    color:#fff;
+}
+.table-wrapper table tr:nth-child(odd){
+    background-color: #e0e0e0;
+}
+

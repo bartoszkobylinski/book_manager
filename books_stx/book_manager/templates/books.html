@@ -4,13 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Django books</title>
 </head>
 <body>
     <div class="main" style="background-image: url({% static 'image/books.jpeg' %});">
         <h3>Books Manager</h3>
-        <table>
+        <div class="table-wrapper">
+            <table>
+                <form method="get">
+                    {{ filter.form.as_p }}
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
             <thead>
                 <th>Author</th>
                 <th>Title</th>
@@ -22,7 +28,7 @@
                 <th>Language</th>
             </thead>
             <tbody>
-                {% for book in object_list %}
+                {% for book in filter.qs %}
                 <tr>
                     <td>{{ book.authors }}</td>
                     <td>{{ book.title }}</td>
@@ -30,12 +36,14 @@
                     <td>{{ book.isbn_10 }}</td>
                     <td>{{ book.isbn_13 }}</td>
                     <td>{{ book.pages }}</td>
-                    <td>{{ book.cover }}</td>
+                    <td><img src="{{book.cover}}" alt="book_first_page_picture"></td>
                     <td>{{ book.language }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        </div>
+        
         <div class="add-book">
             <button><a href="{% url 'add_book' %}">Add book</a></button>
         </div>

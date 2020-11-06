@@ -56,7 +56,7 @@ class GoogleAPIParser:
             for author in query.get('volumeInfo', '').get('authors', ''):
                 authors += f"{author} "
             return authors
-        elif len(query.get('volumeInfo', '').get('authors','')) <1:
+        elif len(query.get('volumeInfo', '').get('authors', '')) < 1:
             return '-'
         else:
             author = query.get('volumeInfo', '').get('authors', '')[0]
@@ -95,7 +95,7 @@ class GoogleAPIParser:
                     return lccn_number.get('identifier', '')
 
     def get_pages(self, query):
-        if query.get('volumeInfo','').get('pageCount','') is None:
+        if query.get('volumeInfo', '').get('pageCount', '') is None:
             return 0
         return query.get('volumeInfo', '').get('pageCount', 0)
 

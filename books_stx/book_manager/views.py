@@ -4,18 +4,24 @@ from book_manager.forms import BookForm, GoogleApiForm
 from book_manager.models import Book
 from book_manager.google_book_api import GoogleAPIParser
 from book_manager.CONSTANS import GOOGLE_API_KEY
+from book_manager.filters import BookFilter
 
 # Create your views here.
 
-
+'''
 class BookListView(ListView):
     model = Book
     template_name = "books.html"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args,**kwargs)
+        context['filter'] = BookFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
     def get_queryset(self):
         queryset = Book.objects.all()
         return queryset
-
+'''
 
 class AddBookView(CreateView):
     form_class = BookForm
@@ -26,17 +32,7 @@ class GoogleApiView(FormView):
     form_class = GoogleApiForm
     template_name = "import_google.html"
     success_url = "books"
-    '''
-    def clean(self):
-        cleaned_data = super().clean()
-        title = cleaned_data.get('title', '')
-        author = cleaned_data.get('author', '')
-        publisher = cleaned_data.get('publisher', '')
-        subject = cleaned_data.get('subject', '')
-        isbn = cleaned_data.get('isbn', '')
-        lccn = cleaned_data.get('lccn', '')
-        oclc = cleaned_data.get('oclc', '')
-    '''    
+
     def form_valid(self, form):
         user_kwargs = {}
         user_kwargs.update(title=form.cleaned_data['title'])
@@ -51,4 +47,3 @@ class GoogleApiView(FormView):
             return redirect('books')
         else:
             return redirect('books')
-
