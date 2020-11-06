@@ -1,22 +1,17 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Django books</title>
-</head>
-<body>
-    <div class="main" style="background-image: url({% static 'image/books.jpeg' %});">
-        <h3>Books Manager</h3>
+
+
+    {% block content %}
+    <div class="main">
         <div class="table-wrapper">
             <table>
+            <div class="search-form">
                 <form method="get">
                     {{ filter.form.as_p }}
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
+            </div>
             <thead>
                 <th>Author</th>
                 <th>Title</th>
@@ -26,6 +21,7 @@
                 <th>Pages</th>
                 <th>Cover</th>
                 <th>Language</th>
+                <th></th>
             </thead>
             <tbody>
                 {% for book in filter.qs %}
@@ -38,18 +34,11 @@
                     <td>{{ book.pages }}</td>
                     <td><img src="{{book.cover}}" alt="book_first_page_picture"></td>
                     <td>{{ book.language }}</td>
+                    <td><a href="{% url 'update_book' pk=book.pk %}"><button class="update-button">update</button></a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         </div>
-        
-        <div class="add-book">
-            <button><a href="{% url 'add_book' %}">Add book</a></button>
-        </div>
-        <div class="import-google-books">
-            <button><a href="{% url 'import_books' %}">Import from Google</a></button>
-        </div>
     </div>
-</body>
-</html>
+    {% endblock %}

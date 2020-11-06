@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="{% url 'books' %}"><img src="{% static 'images/logo.png' %}" alt="logo"></a></div>
+        <div class="title"><h3>Books Manager</h3></div>
+        <div class="nav-buttons">
+            <div class="add-book"><a href="{% url 'add_book' %}"><button>Add book</button></a></div>
+            <div class="import-google-books"><a href="{% url 'import_books' %}"><button>Import books from Google</button></a></div>
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

@@ -3,6 +3,7 @@ from book_manager.models import Book
 
 
 class BookFilter(django_filters.FilterSet):
+
     authors = django_filters.CharFilter(lookup_expr="icontains", field_name='authors')
     title = django_filters.CharFilter(lookup_expr="icontains", field_name="title")
     language = django_filters.CharFilter(lookup_expr="icontains", field_name="language")

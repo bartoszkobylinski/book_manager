@@ -1,36 +1,47 @@
-from django.views.generic import ListView, CreateView, FormView
+from django.views.generic import ListView, CreateView, FormView, UpdateView
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from book_manager.forms import BookForm, GoogleApiForm
 from book_manager.models import Book
 from book_manager.google_book_api import GoogleAPIParser
 from book_manager.CONSTANS import GOOGLE_API_KEY
 from book_manager.filters import BookFilter
 
-# Create your views here.
-
-'''
-class BookListView(ListView):
-    model = Book
-    template_name = "books.html"
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args,**kwargs)
-        context['filter'] = BookFilter(self.request.GET, queryset=self.get_queryset())
-        return context
-
-    def get_queryset(self):
-        queryset = Book.objects.all()
-        return queryset
-'''
 
 class AddBookView(CreateView):
-    form_class = BookForm
-    template_name = "add_book.html"
+    model = Book
+    fields = ['authors',
+              'title',
+              'publish_year',
+              'isbn_10',
+              'isbn_13',
+              'oclc_number',
+              'lccn_number',
+              'pages',
+              'language',
+              'subject',
+              'cover']
+    template_name = "book_manager/add_book.html"
+
+
+class UpdateBookView(UpdateView):
+    model = Book
+    fields = ['authors',
+              'title',
+              'publish_year',
+              'isbn_10',
+              'isbn_13',
+              'oclc_number',
+              'lccn_number',
+              'pages',
+              'language',
+              'cover']
+    template_name = 'book_manager/update-book.html'
 
 
 class GoogleApiView(FormView):
     form_class = GoogleApiForm
-    template_name = "import_google.html"
+    template_name = "book_manager/import_google.html"
     success_url = "books"
 
     def form_valid(self, form):
