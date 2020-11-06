@@ -28,10 +28,10 @@ class TestBookModel(TestCase):
 
     def setUp(self):
         self.form = BookForm(data={
-            'author': "Jhon Doe",
+            'authors': "Jhon Doe",
             'title': "Django Cook Book",
             'publish_year': 1254,
-            'isbn': "1234567890153",
+            'isbn_13': "1234567890153",
             'pages': 1254,
             'cover': 'http://www.camy.pl',
             'language': 'pl'
@@ -39,10 +39,10 @@ class TestBookModel(TestCase):
 
     def test_retrieving_and_saving_book_model(self):
         Book.objects.create(
-            author='Author',
+            authors='Author',
             title="Title",
             publish_year=1520,
-            isbn='12345678023',
+            isbn_13='12345678023',
             pages=152,
             cover='http:/eueu',
             language="pl")
@@ -52,10 +52,10 @@ class TestBookModel(TestCase):
     def test_assert_raises_validation_error(self):
         with self.assertRaises(ValidationError):
             book = Book(
-                author='Author',
+                authors='Author',
                 title="Title",
                 publish_year=1520,
-                isbn='1234567890',
+                isbn_13='1234567890',
                 pages=152,
                 cover='http:/eueu',
                 language="pl")
@@ -65,7 +65,16 @@ class TestBookModel(TestCase):
         self.assertTrue(self.form.is_valid())
 
     def test_book_form_is_not_valid_with_wrong_data(self):
-        self.assertFalse(self.form.is_valid())
+        form = BookForm(data={
+            'authors': "Jhon Doe",
+            'title': "Django Cook Book",
+            'publish_year': 1254,
+            'isbn_13': "1234567890vvvvvvvvvvvvvvvv153",
+            'pages': 1254,
+            'cover': 'http://www.camy.pl',
+            'language': 'pl'
+        })
+        self.assertFalse(form.is_valid())
 
 
 class TestBookListView(TestCase):
@@ -98,10 +107,10 @@ class TestAddBookView(TestCase):
 
         self.client.post(
             self.add_book_url, {
-                'author': "Jhon Doe",
+                'authors': "Jhon Doe",
                 'title': "Django Cook Book",
                 'publish_year': 1254,
-                'isbn': "1234567890153",
+                'isbn_13': "1234567890153",
                 'pages': 1254,
                 'cover': 'http://www.camy.pl',
                 'language': 'pl'})

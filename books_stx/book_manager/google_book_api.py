@@ -12,8 +12,8 @@ class GoogleAPIParser:
         self.isbn = kwargs.get('isbn', '')
         self.subject = kwargs.get('subject', '')
         self.publisher = kwargs.get('publisher', '')
-        self.lccn = kwargs.get('lccn', '')
-        self.oclc = kwargs.get('oclc', '')
+        self.lccn = kwargs.get('lccn_number', '')
+        self.oclc = kwargs.get('oclc_number', '')
 
     def __str__(self):
         return f"Google API parser for website: {self.google_key}"
@@ -39,6 +39,7 @@ class GoogleAPIParser:
 
     def get_query(self):
         query = self.create_query()
+        print(f"that is query: {query}")
         if requests.get(query).status_code == 200:
             response = requests.get(query)
             response = response.content.decode('utf-8')
@@ -47,6 +48,7 @@ class GoogleAPIParser:
 
     def get_query_elements(self):
         query_elements = self.get_query()
+        print(query_elements)
         query_elements_list = query_elements.get("items", '')
         return query_elements_list
 
@@ -56,12 +58,21 @@ class GoogleAPIParser:
             for author in query.get('volumeInfo', '').get('authors', ''):
                 authors += f"{author} "
             return authors
+        elif len(query.get('volumeInfo', '').get('authors','')) <1:
+            return '-'
         else:
             author = query.get('volumeInfo', '').get('authors', '')[0]
             return author
 
     def get_title(self, query):
         return query.get('volumeInfo', '').get('title', '')
+
+    def get_publish_year(self, query):
+        if query.get('volumeInfo', '').get('publishedDate', '') is None:
+            return 1900
+        elif len(query.get('volumeInfo', '').get('publishedDate', '')) > 4:
+            return query.get('volumeInfo', '').get('publishedDate', '')[:4]
+        return query.get('volumeInfo', '').get('publishedDate', 1900)
 
     def get_isbn_13(self, query):
         for isbn_13 in query.get('volumeInfo', '').get('industryIdentifiers', ''):
@@ -86,7 +97,9 @@ class GoogleAPIParser:
                     return lccn_number.get('identifier', '')
 
     def get_pages(self, query):
-        return query.get('volumeInfo', '').get('pageCount', '')
+        if query.get('volumeInfo','').get('pageCount','') is None:
+            return 0
+        return query.get('volumeInfo', '').get('pageCount', 0)
 
     def get_language(self, query):
         return query.get('volumeInfo', '').get('language', '')
@@ -108,6 +121,7 @@ class GoogleAPIParser:
             book.update(oclc_number=self.get_oclc_number(element))
             book.update(lccn_number=self.get_lccn_number(element))
             book.update(pages=self.get_pages(element))
+            book.update(publish_year=self.get_publish_year(element))
             book.update(language=self.get_language(element))
             book.update(cover=self.get_cover_link(element))
             books_list.append(book)
@@ -115,5 +129,4 @@ class GoogleAPIParser:
 
     def save_books_to_database(self):
         books = self.get_books_from_query()
-        print(books)
         Book.objects.bulk_create([Book(**book) for book in books])
