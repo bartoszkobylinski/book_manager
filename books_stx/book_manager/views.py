@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, FormView
 from book_manager.forms import BookForm
 from book_manager.models import Book
 
@@ -12,9 +12,12 @@ class BookListView(ListView):
     def get_queryset(self):
         queryset = Book.objects.all()
         return queryset
-    
 
 
 class AddBookView(CreateView):
     form_class = BookForm
     template_name = "add_book.html"
+
+
+class GmailApiView(FormView):
+    pass

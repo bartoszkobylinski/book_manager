@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from book_manager.models import Book
 from django.core.exceptions import ValidationError
 
@@ -19,3 +19,6 @@ class BookForm(ModelForm):
             raise ValidationError(
                 "Your ISBN number should have 10 characters. It should contain only alphanumeric characters")
         return value
+
+class GoogleApiForm(Form):
+    pass

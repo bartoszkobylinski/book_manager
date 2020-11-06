@@ -3,10 +3,10 @@ import json
 from book_manager.models import Book
 
 
-class GmailAPIParser:
+class GoogleAPIParser:
 
-    def __init__(self, gmail_key, **kwargs):
-        self.gmail_key = gmail_key
+    def __init__(self, google_key, **kwargs):
+        self.google_key = google_key
         self.author = kwargs.get('author', '')
         self.title = kwargs.get('title', '')
         self.isbn = kwargs.get('isbn', '')
@@ -16,10 +16,10 @@ class GmailAPIParser:
         self.oclc = kwargs.get('oclc', '')
 
     def __str__(self):
-        return f"Gmail API parser for website: {self.gmail_key}"
+        return f"Google API parser for website: {self.google_key}"
 
     def create_query(self):
-        query = self.gmail_key
+        query = self.google_key
         if self.author:
             query = f"{query}{self.author}"
         if self.title:
