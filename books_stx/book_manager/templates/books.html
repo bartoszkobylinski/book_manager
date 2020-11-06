@@ -1,45 +1,47 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Django books</title>
 </head>
 <body>
-
-    <h3>Books Manager</h3>
-    
-    <table>
-        <thead>
-            <th>Author</th>
-            <th>Title</th>
-            <th>Publication year</th>
-            <th>ISBN-10 Number</th>
-            <th>ISBN-13 Number</th>
-            <th>Pages</th>
-            <th>Cover</th>
-            <th>Language</th>
-        </thead>
-        <tbody>
-            {% for book in object_list %}
-            <tr>
-                <td>{{ book.authors }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.publish_year }}</td>
-                <td>{{ book.isbn_10 }}</td>
-                <td>{{ book.isbn_13 }}</td>
-                <td>{{ book.pages }}</td>
-                <td>{{ book.cover }}</td>
-                <td>{{ book.language }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="add-book">
-        <button><a href="{% url 'add_book' %}">Add book</a></button>
-    </div>
-    <div class="import-google-books">
-        <button><a href="{% url 'import_books' %}">Import from Google</a></button>
+    <div class="main" style="background-image: url({% static 'image/books.jpeg' %});">
+        <h3>Books Manager</h3>
+        <table>
+            <thead>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Publication year</th>
+                <th>ISBN-10 Number</th>
+                <th>ISBN-13 Number</th>
+                <th>Pages</th>
+                <th>Cover</th>
+                <th>Language</th>
+            </thead>
+            <tbody>
+                {% for book in object_list %}
+                <tr>
+                    <td>{{ book.authors }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publish_year }}</td>
+                    <td>{{ book.isbn_10 }}</td>
+                    <td>{{ book.isbn_13 }}</td>
+                    <td>{{ book.pages }}</td>
+                    <td>{{ book.cover }}</td>
+                    <td>{{ book.language }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="add-book">
+            <button><a href="{% url 'add_book' %}">Add book</a></button>
+        </div>
+        <div class="import-google-books">
+            <button><a href="{% url 'import_books' %}">Import from Google</a></button>
+        </div>
     </div>
 </body>
 </html>
