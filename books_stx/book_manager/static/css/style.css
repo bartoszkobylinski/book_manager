@@ -1,0 +1,124 @@
+body{
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 1rem;
+}
+nav{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.logo{
+    width: 100%;
+    text-align: center;
+}
+.logo img{
+    width: 6.25rem;
+}
+.title{
+    width: 100%;
+    text-align: center;
+}
+.title h3{
+    text-transform: uppercase;
+}
+.nav-buttons{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.add-book button,
+.import-google-books button{
+    width: 15rem;
+    padding: 1rem;
+    margin: 0.5rem;
+}
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.main h3{
+    text-transform: uppercase;
+}
+
+.table-wrapper,
+.form-wrapper{
+    width: 70%;
+}
+.form-wrapper{
+    text-align: center;
+}
+.form-wrapper label{
+    text-transform: uppercase;
+    margin: 0.1rem 2rem 0.1rem 0.1rem;
+}
+.input-button,
+.update-button{
+    border-radius: 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    text-transform: uppercase;
+    margin: 1rem;
+    width: 7rem;
+    padding: 1rem;
+}
+.update-button{
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+.table-wrapper table td,th{
+    text-align: center;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 0.5px solid #111;
+}
+.table-wrapper table td img{
+    width: 4rem;
+}
+.table-wrapper table th{
+    background-color: #333;
+    color:#fff;
+}
+.table-wrapper table tr:nth-child(odd){
+    background-color: #e0e0e0;
+}
+.search-form{
+    display: flex;
+    flex-wrap: wrap;
+}
+.search-form p{
+    width: 22rem;
+}
+#id_publish_year__gt,
+#id_publish_year__lt{
+    width: 5rem;
+}
+.search-form button,
+.add-book button,
+.import-google-books button{
+    border-radius: 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    text-transform: uppercase;
+}
+.search-form button{
+    width: 7rem;
+    margin-bottom: 1rem;
+}
+.search-form button:hover,
+.add-book button:hover,
+.import-google-books button:hover{
+    background-color: #e0e0e0;
+    color:#333;
+}
+.errorlist li{
+    color: #CB4335;
+    font-size: 2rem;
+    border: 1px solid #CB4335;
+    padding: 1rem;
+    border-radius: 5px;
+    list-style: none;
+}

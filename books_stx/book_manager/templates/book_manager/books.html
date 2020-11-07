@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+    {% block content %}
+    <div class="main">
+        <div class="table-wrapper">
+            <table>
+            <div class="search-form">
+                <form method="get">
+                    {{ filter.form.as_p }}
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <thead>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Publication year</th>
+                <th>ISBN-10 Number</th>
+                <th>ISBN-13 Number</th>
+                <th>Pages</th>
+                <th>Cover</th>
+                <th>Language</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {% for book in filter.qs %}
+                <tr>
+                    <td>{{ book.authors }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publish_year }}</td>
+                    <td>{{ book.isbn_10 }}</td>
+                    <td>{{ book.isbn_13 }}</td>
+                    <td>{{ book.pages }}</td>
+                    <td><img src="{{book.cover}}" alt="book_first_page_picture"></td>
+                    <td>{{ book.language }}</td>
+                    <td><a href="{% url 'update_book' pk=book.pk %}"><button class="update-button">update</button></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content%}
+    <div class="main">
+        <h3>Add your book here:</h3>
+        <div class="form-wrapper">
+            <form action="" method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                {{ form.as_p }}
+                <input class="input-button" type="submit" value="upload">
+            </form> 
+        </div>
+    </div>
+    {% endblock %}
+ 
