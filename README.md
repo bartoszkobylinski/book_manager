@@ -48,39 +48,51 @@ postgres=# CREATE USER myprojectuser WITH PASSWORD 'password';
 
 Give to user all neede privileges:
 
-```
+```postgres
 postgres=# GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;
 ```
 
+When you are finished exit out Postgres prompt by typing
 
+```postgres
+postgres=# \q
+```
 
-
-
+### CREATE VIRTUAL ENVIRONMENT
 
 Create a virtual environment
 
 ```
 $ python3 -m venv /path/to/new/virtual/env
 ```
+
 Activate virtual environment
+
 ```
 source ~/env_catalog_name/bin/activate
 ```
-install depencies 
+
+### STEPS WITH DJANGO SETTINGS
+
+Install dependencies
 
 ```
-$ cd ../mountain_weather
 $ pip install -r requirements.txt
 ```
-install virtual environment
+
+Create json file with SECRET_KEY and credentials to Postgresql like:
+
+```js
+{
+    "SECRET_KEY" : "your_secret_key",
+    "NAME" : "myproject_name",
+    "USER" : "user",
+    "PASSWORD" : "password"
+}
 ```
-export DB_NAME='name of your database'
-export DB_USER='name of user'
-export DB_PASS='password'
-export ACCU_API_KEY='your api key on accu weather services'
-export DB_HOST='localhost'
-export PATH_SCRAPER='path to chromedriver file on your computer'
-```
+
+Change in CONSTANTS.py file in django project value of PATH_TO_CONFIG_SECRET_KEY_FILE to path to this json file
+
 To run server locally
 
 ```
