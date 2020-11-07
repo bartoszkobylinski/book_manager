@@ -1,8 +1,7 @@
 from django import forms
 from datetime import date
 from book_manager.models import Book
-from django.core.validators import URLValidator
-
+from book_manager.languages import get_language_codes
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -42,6 +41,12 @@ class BookForm(forms.ModelForm):
         if value > date.today().year or value < 1900:
             raise forms.ValidationError(
                 f"Publish year has to be beetwen 1900 and {date.today().year}. Your year is: {value}")
+
+    def clean_language(self):
+        value = self.cleaned_data.get('language', '')
+        if value not in get_language_codes():
+            raise forms.ValidationError(f"""Code given by you is not maching any of possible choices like
+        {get_language_codes()}""")
 
 
 class GoogleApiForm(forms.Form):
