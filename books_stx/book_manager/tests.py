@@ -62,6 +62,7 @@ class TestBookModel(TestCase):
             book.full_clean()
 
     def test_book_form_is_valid_with_correct_data(self):
+        self.form 
         self.assertTrue(self.form.is_valid())
 
     def test_book_form_is_not_valid_with_wrong_data(self):
