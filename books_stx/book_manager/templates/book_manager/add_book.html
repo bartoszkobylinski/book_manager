@@ -7,8 +7,19 @@
         <div class="form-wrapper">
             <form action="" method="post">
                 {% csrf_token %}
-                {% if form.errors %}
-                    <p class="error">{{ error }}</p>
+                {% if form.error %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="error">
+                                <p>{{ error }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="error">
+                            <p>{{ error }}</p>
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 {{ form.as_p }}
                 <input class="input-button" type="submit" value="upload">

@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import URLValidator
 
 
 class Book(models.Model):
@@ -11,7 +12,7 @@ class Book(models.Model):
     oclc_number = models.CharField(max_length=25, blank=True, null=True)
     lccn_number = models.CharField(max_length=25, blank=True, null=True)
     pages = models.PositiveIntegerField(null=True)
-    cover = models.URLField(blank=True)
+    cover = models.URLField(blank=True, validators=[URLValidator])
     language = models.CharField(max_length=2, null=True)
     subject = models.CharField(max_length=50, blank=True, null=True)
 

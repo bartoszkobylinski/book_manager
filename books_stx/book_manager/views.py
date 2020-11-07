@@ -2,23 +2,13 @@ from django.views.generic import CreateView, FormView, UpdateView
 from django.shortcuts import redirect
 from book_manager.forms import GoogleApiForm
 from book_manager.models import Book
+from book_manager.forms import BookForm
 from book_manager.google_book_api import GoogleAPIParser
 from book_manager.CONSTANS import GOOGLE_API_KEY
 
 
 class AddBookView(CreateView):
-    model = Book
-    fields = ['authors',
-              'title',
-              'publish_year',
-              'isbn_10',
-              'isbn_13',
-              'oclc_number',
-              'lccn_number',
-              'pages',
-              'language',
-              'subject',
-              'cover']
+    form_class = BookForm
     template_name = "book_manager/add_book.html"
 
 
@@ -53,6 +43,4 @@ class GoogleApiView(FormView):
         if user_kwargs:
             user_query = GoogleAPIParser(GOOGLE_API_KEY, **user_kwargs)
             user_query.save_books_to_database()
-            return redirect('books')
-        else:
             return redirect('books')
