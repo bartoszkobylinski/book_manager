@@ -3,6 +3,7 @@ from datetime import date
 from book_manager.models import Book
 from book_manager.languages import get_language_codes
 
+
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book

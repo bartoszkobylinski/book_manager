@@ -19,7 +19,7 @@ class TestDjangoInstallation(TestCase):
 
     def test_if_django_is_instaled_and_runs(self):
         driver = self.driver
-        driver.get("http://127.0.0.1:8000/books")
+        driver.get("http://127.0.0.1:8000")
         browser = driver
         self.assertIn("Django books", browser.title)
 
@@ -30,7 +30,7 @@ class TestBookModel(TestCase):
         self.form = BookForm(data={
             'authors': "Jhon Doe",
             'title': "Django Cook Book",
-            'publish_year': 1254,
+            'publish_year': 1994,
             'isbn_13': "1234567890153",
             'pages': 1254,
             'cover': 'http://www.camy.pl',
@@ -87,7 +87,7 @@ class TestBookListView(TestCase):
         self.assertEqual(self.response.status_code, 200)
 
     def test_book_list_view_is_using_correct_template(self):
-        self.assertTemplateUsed(self.response, 'books.html')
+        self.assertTemplateUsed(self.response, 'book_manager/books.html')
 
 
 class TestAddBookView(TestCase):
@@ -101,7 +101,7 @@ class TestAddBookView(TestCase):
         self.assertEqual(self.response.status_code, 200)
 
     def test_add_book_view_is_using_correct_template(self):
-        self.assertTemplateUsed(self.response, 'add_book.html')
+        self.assertTemplateUsed(self.response, 'book_manager/add_book.html')
 
     def test_add_book_view_POST_method(self):
 
@@ -109,9 +109,9 @@ class TestAddBookView(TestCase):
             self.add_book_url, {
                 'authors': "Jhon Doe",
                 'title': "Django Cook Book",
-                'publish_year': 1254,
-                'isbn_13': "1234567890153",
-                'pages': 1254,
+                'publish_year': 1965,
+                'isbn_13': "1234567890123",
+                'pages': 123123,
                 'cover': 'http://www.camy.pl',
                 'language': 'pl'})
         self.assertEqual(Book.objects.last().title, "Django Cook Book")
