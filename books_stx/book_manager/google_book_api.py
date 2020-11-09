@@ -1,19 +1,20 @@
-import requests
 import json
+
+import requests
+
 from book_manager.models import Book
 
 
 class GoogleAPIParser:
-
     def __init__(self, google_key, **kwargs):
         self.google_key = google_key
-        self.author = kwargs.get('author', '')
-        self.title = kwargs.get('title', '')
-        self.isbn = kwargs.get('isbn', '')
-        self.subject = kwargs.get('subject', '')
-        self.publisher = kwargs.get('publisher', '')
-        self.lccn = kwargs.get('lccn_number', '')
-        self.oclc = kwargs.get('oclc_number', '')
+        self.author = kwargs.get("author", "")
+        self.title = kwargs.get("title", "")
+        self.isbn = kwargs.get("isbn", "")
+        self.subject = kwargs.get("subject", "")
+        self.publisher = kwargs.get("publisher", "")
+        self.lccn = kwargs.get("lccn_number", "")
+        self.oclc = kwargs.get("oclc_number", "")
 
     def __str__(self):
         return f"Google API parser for website: {self.google_key}"
@@ -41,72 +42,74 @@ class GoogleAPIParser:
         query = self.create_query()
         if requests.get(query).status_code == 200:
             response = requests.get(query)
-            response = response.content.decode('utf-8')
+            response = response.content.decode("utf-8")
             response = json.loads(response)
             return response
 
     def get_query_elements(self):
         query_elements = self.get_query()
-        query_elements_list = query_elements.get("items", '')
+        query_elements_list = query_elements.get("items", "")
         return query_elements_list
 
     def get_authors(self, query):
-        authors = ''
-        if len(query.get('volumeInfo', '').get('authors', '')) > 1:
-            for author in query.get('volumeInfo', '').get('authors', ''):
+        authors = ""
+        if len(query.get("volumeInfo", "").get("authors", "")) > 1:
+            for author in query.get("volumeInfo", "").get("authors", ""):
                 authors += f"{author} "
             return authors
-        elif len(query.get('volumeInfo', '').get('authors', '')) < 1:
-            return '-'
+        elif len(query.get("volumeInfo", "").get("authors", "")) < 1:
+            return "-"
         else:
-            author = query.get('volumeInfo', '').get('authors', '')[0]
+            author = query.get("volumeInfo", "").get("authors", "")[0]
             return author
 
     def get_title(self, query):
-        return query.get('volumeInfo', '').get('title', '')
+        return query.get("volumeInfo", "").get("title", "")
 
     def get_publish_year(self, query):
-        if query.get('volumeInfo', '').get('publishedDate', '') is None:
+        if query.get("volumeInfo", "").get("publishedDate", "") is None:
             return 1900
-        elif len(query.get('volumeInfo', '').get('publishedDate', '')) > 4:
-            return query.get('volumeInfo', '').get('publishedDate', '')[:4]
-        return query.get('volumeInfo', '').get('publishedDate', 1900)
+        elif len(query.get("volumeInfo", "").get("publishedDate", "")) > 4:
+            return query.get("volumeInfo", "").get("publishedDate", "")[:4]
+        return query.get("volumeInfo", "").get("publishedDate", 1900)
 
     def get_isbn_13(self, query):
-        for isbn_13 in query.get('volumeInfo', '').get('industryIdentifiers', ''):
+        for isbn_13 in query.get("volumeInfo", "").get("industryIdentifiers", ""):
             if isbn_13.get("type", "") == "ISBN_13":
                 return isbn_13.get("identifier", "")
 
     def get_isbn_10(self, query):
-        for isbn_10 in query.get('volumeInfo', '').get('industryIdentifiers', ''):
+        for isbn_10 in query.get("volumeInfo", "").get("industryIdentifiers", ""):
             if isbn_10.get("type", "") == "ISBN_10":
                 return isbn_10.get("identifier", "")
 
     def get_oclc_number(self, query):
-        for oclc_number in query.get('volumeInfo', '').get('industryIdentifiers', ''):
-            if oclc_number.get('type', '') == 'OTHER':
-                if oclc_number.get('identifier', '')[:4] == 'OCLC':
-                    return oclc_number.get('identifier', '')
+        for oclc_number in query.get("volumeInfo", "").get("industryIdentifiers", ""):
+            if oclc_number.get("type", "") == "OTHER":
+                if oclc_number.get("identifier", "")[:4] == "OCLC":
+                    return oclc_number.get("identifier", "")
 
     def get_lccn_number(self, query):
-        for lccn_number in query.get('volumeInfo', '').get('industryIdentifiers', ''):
-            if lccn_number.get('type', '') == 'OTHER':
-                if lccn_number.get('identifier', '')[:4] == 'OCLC':
-                    return lccn_number.get('identifier', '')
+        for lccn_number in query.get("volumeInfo", "").get("industryIdentifiers", ""):
+            if lccn_number.get("type", "") == "OTHER":
+                if lccn_number.get("identifier", "")[:4] == "OCLC":
+                    return lccn_number.get("identifier", "")
 
     def get_pages(self, query):
-        if query.get('volumeInfo', '').get('pageCount', '') is None:
+        if query.get("volumeInfo", "").get("pageCount", "") is None:
             return 0
-        return query.get('volumeInfo', '').get('pageCount', 0)
+        return query.get("volumeInfo", "").get("pageCount", 0)
 
     def get_language(self, query):
-        return query.get('volumeInfo', '').get('language', '')
+        return query.get("volumeInfo", "").get("language", "")
 
     def get_cover_link(self, query):
-        if isinstance(query.get('volumeInfo', '').get('imageLinks', ''), str):
-            return query.get('volumeInfo', '').get('imageLinks', '')
+        if isinstance(query.get("volumeInfo", "").get("imageLinks", ""), str):
+            return query.get("volumeInfo", "").get("imageLinks", "")
         else:
-            return query.get('volumeInfo', '').get('imageLinks', '').get('thumbnail', '')
+            return (
+                query.get("volumeInfo", "").get("imageLinks", "").get("thumbnail", "")
+            )
 
     def get_books_from_query(self):
         books_list = []

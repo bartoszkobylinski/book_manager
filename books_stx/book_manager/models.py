@@ -1,6 +1,6 @@
+from django.core.validators import URLValidator
 from django.db import models
 from django.urls import reverse
-from django.core.validators import URLValidator
 
 
 class Book(models.Model):
@@ -17,4 +17,4 @@ class Book(models.Model):
     subject = models.CharField(max_length=50, blank=True, null=True)
 
     def get_absolute_url(self):
-        return reverse('books')
+        return reverse("books")
